@@ -8,15 +8,15 @@
   <title>To-do List</title>
 </head>
 
-<body class="bg-blue-100">
+<body class="bg-zinc-900">
   <header class="h-[10vh] flex justify-between p-4">
     <nav>
       <ul>
-        <li>Home</li>
+        <li class="text-slate-50">Home</li>
       </ul>
     </nav>
 
-    <h1><?= $day ?></h1>
+    <h1 class="text-slate-50"><?= $day ?? date("d F Y"); ?></h1>
 
     <a href="">
       <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -35,7 +35,7 @@
   </main>
 
   <footer class="h-[10vh] flex justify-center">
-    <p class="self-end pb-3">©Propulsed by DylanC-Code</p>
+    <p class="self-end pb-3 text-slate-50">©Propulsed by AnthoL-Code</p>
   </footer>
 </body>
 

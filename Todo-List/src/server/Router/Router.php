@@ -19,6 +19,13 @@ class Router
     return $route;
   }
 
+  public function post($path, $action)
+  {
+    $route = new Route($path, $action);
+    $this->routes['POST'][] = $route;
+    return $route;
+  }
+
   public function run()
   {
     $method = $_SERVER['REQUEST_METHOD'];
@@ -29,6 +36,6 @@ class Router
     foreach ($this->routes[$method] as $route)
       if ($route->match($this->url)) return $route->call();
 
-    throw new RouterException("No route matching with this url");
+    throw new RouterException("No route matching with this url '$this->url'");
   }
 }

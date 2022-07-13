@@ -22,7 +22,7 @@ class Route
 
     array_shift($matches);
 
-    $this->matches = $matches[0];
+    $this->matches = $matches;
 
     return true;
   }
