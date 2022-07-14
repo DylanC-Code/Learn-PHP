@@ -33,8 +33,9 @@ class Router
     if (!isset($this->routes[$method]))
       throw new RouterException("No routes matching this request method '$method'");
 
-    foreach ($this->routes[$method] as $route)
+    foreach ($this->routes[$method] as $route) {
       if ($route->match($this->url)) return $route->call();
+    }
 
     throw new RouterException("No route matching with this url '$this->url'");
   }

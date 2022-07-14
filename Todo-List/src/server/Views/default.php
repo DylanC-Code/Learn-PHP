@@ -5,14 +5,20 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/Todo-List/src/client/assets/css/output.css">
+  <script type="module" src="/Todo-List/src/client/main.js" defer></script>
   <title>To-do List</title>
 </head>
 
-<body class="bg-zinc-900">
+<body class="bg-zinc-900 overflow-hidden">
   <header class="h-[10vh] flex justify-between p-4">
-    <nav>
-      <ul>
-        <li class="text-slate-50">Home</li>
+    <nav class='relative'>
+      <figure class="cursor-pointer mb-4" id='burger'>
+        <img src="./src/client/assets/static/Burger.svg" alt="Burger">
+      </figure>
+      <ul class='invisible absolute w-[15vw] py-4 z-10 flex flex-col text-lg text-slate-50 bg-zinc-900'>
+        <a href="/" class="pb-1">Home</a>
+        <a href=<?= $connect ? "logout" : "login" ?>><?= $connect ? "Disconnect" : "Login" ?></a>
+        <a href="register">Register</a>
       </ul>
     </nav>
 
@@ -30,7 +36,7 @@
     </a>
   </header>
 
-  <main class="h-[80vh]">
+  <main class="h-[80vh] flex flex-col justify-center">
     <?= $content ?>
   </main>
 

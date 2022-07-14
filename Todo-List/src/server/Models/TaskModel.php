@@ -4,12 +4,14 @@ namespace App\Models;
 
 use App\Database\MyDB;
 
-class TaskModel extends Model
+class TaskModel
 {
+  private $db;
+  private $id;
   public function __construct($id = null)
   {
+    $this->db = new MyDB;
     $this->id = $id;
-    $this->db = new MyDB();
   }
 
   public function addOne(object $datas)
