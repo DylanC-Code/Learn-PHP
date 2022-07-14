@@ -13,7 +13,9 @@ class HomeController extends Controller
 
   public function start()
   {
-    $this->render('Task/task', ['isopen' => false]);
+    $tasks = (new TaskModel(date("d F Y")))->getAll();
+
+    $this->render('Task/task', ['isopen' => false, 'tasks' => $tasks]);
   }
 
   public function taskModal()
@@ -24,7 +26,7 @@ class HomeController extends Controller
   public function addTask()
   {
     $task = $_POST['task'];
-    $regex = "#^[\wÜ-ü'_-]{5,255}$#";
+    $regex = "#^[\wÜ-ü\s'_-]{5,255}$#";
     $content = ['isopen' => true];
 
     if (!preg_match($regex, $task)) :

@@ -23,5 +23,9 @@ class TaskModel extends Model
 
   public function getAll()
   {
+    $req = $this->db->prepare("SELECT * FROM tasks WHERE id_user=:user AND date=:date");
+    $req->bindValue(':user', 1);
+    $req->bindParam(':date', $this->id);
+    return $req->execute();
   }
 }
