@@ -20,6 +20,11 @@ class UserController extends Controller
   }
 
 
+  /**
+   * Control if the login form is correctly submit and display view in consequences
+   *
+   * @return void
+   */
   public function login()
   {
     $inputs = $this->checkInput();
@@ -32,7 +37,7 @@ class UserController extends Controller
     $id = (new UserModel())->login($this->datas);
 
     if ($id) :
-      $this->session();
+      // $this->session();
       $this->render('user', $this->content);
     else :
       $this->content['error'] = 'Wrongs informations !';
@@ -42,6 +47,11 @@ class UserController extends Controller
     header("Location:/Todo-List");
   }
 
+  /**
+   * Control if the register form is correctly submit, check if user already exist and display view in consequences
+   *
+   * @return void
+   */
   public function registerForm()
   {
     $this->render('user', $this->content);
@@ -63,6 +73,11 @@ class UserController extends Controller
     header('Location:succes');
   }
 
+  /**
+   * Check if each inputs match with its own regex
+   *
+   * @return bool
+   */
   private function checkInput(): bool
   {
     if (!preg_match("#^[\w_-]{5,50}$#", $this->datas['pseudo'])) :
@@ -78,6 +93,11 @@ class UserController extends Controller
     endif;
   }
 
+  /**
+   * Display the view for the succesfully register form
+   *
+   * @return void
+   */
   public function succes()
   {
     $succes = $_SERVER["HTTP_REFERER"];
@@ -87,9 +107,5 @@ class UserController extends Controller
     if ($succes == 'register') $this->content['succes'] = 'You are succesfully registered';
 
     $this->render('succes', $this->content);
-  }
-
-  private function session()
-  {
   }
 }
