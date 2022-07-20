@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
+use App\Tools\Session;
 
 class UserController extends Controller
 {
@@ -10,26 +11,40 @@ class UserController extends Controller
   public function __construct()
   {
     $this->datas = $_POST;
+    $this->content['connect'] = Session::isConnect();
   }
 
   public function loginForm()
   {
-    $this->render('user');
+    $this->render('user', $this->content);
   }
 
   public function login()
   {
     $inputs = $this->checkInput();
 
-    if (!$inputs) return;
+    if (!$inputs) :
+      $this->content['error'] = 'Wrongs informations !';
+      return $this->render('user', $this->content);
+    endif;
 
-    $this->render('user', $this->content);
+    $id = (new UserModel())->login($this->datas);
+
+    if ($id) :
+      $this->session();
+      $this->render('user', $this->content);
+    else :
+      $this->content['error'] = 'Wrongs informations !';
+      $this->render('user', $this->content);
+    endif;
+
+    // header("Location:/");
   }
 
   public function registerForm()
   {
 
-    $this->render('user');
+    $this->render('user', $this->content);
   }
 
   public function register()
@@ -56,7 +71,7 @@ class UserController extends Controller
     elseif (!preg_match("#^.{0,255}$#", $this->datas['password'])) :
       $this->content['error'] = 'The password can be bigger than 8 and lower than 255!';
       $this->render('user', $this->content);
-    elseif (!isset($this->datas['verif']) || $this->datas['verif'] !== $this->datas['password']) :
+    elseif (isset($this->datas['verif']) && $this->datas['verif'] !== $this->datas['password']) :
       $this->content['error'] = 'Passwords isn\'t same!';
       $this->render('user', $this->content);
     else : return true;
@@ -72,5 +87,9 @@ class UserController extends Controller
     if ($succes == 'register') $this->content['succes'] = 'You are succesfully registered';
 
     $this->render('succes', $this->content);
+  }
+
+  private function session()
+  {
   }
 }

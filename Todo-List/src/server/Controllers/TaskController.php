@@ -5,34 +5,37 @@ namespace App\Controllers;
 use App\Models\TaskModel;
 use App\Tools\Session;
 
-class HomeController extends Controller
+class TaskController extends Controller
 {
-  public function __construct($index = null)
+  private $date;
+  public function __construct($index = null, $date = null)
   {
     $this->index = $index;
     $this->content['connect'] = Session::isConnect();
+    $this->date = $date;
+
+    if (!$this->date) $this->date = date("d F Y");
   }
 
-  public function start()
+  public function display()
   {
-
-    $tasks = (new TaskModel(date("d F Y")))->getAll();
+    $tasks = (new TaskModel($this->date))->getAll();
     $this->content = array_merge($this->content, ['isopen' => false, 'tasks' => $tasks]);
 
     $this->render('task', $this->content);
   }
 
-  public function taskModal()
+  public function addModal()
   {
-    $tasks = (new TaskModel(date("d F Y")))->getAll();
+    $tasks = (new TaskModel($this->date))->getAll();
     $this->content = array_merge($this->content, ['isopen' => true, 'tasks' => $tasks]);
 
     $this->render('task', $this->content);
   }
 
-  public function addTask()
+  public function add()
   {
-    $tasks = (new TaskModel(date("d F Y")))->getAll();
+    $tasks = (new TaskModel($this->date))->getAll();
     $task = $_POST['task'];
     $regex = "#^[\wÜ-ü\s'_-]{5,255}$#";
 
@@ -44,7 +47,8 @@ class HomeController extends Controller
       return  $this->render('task', $this->content);
     endif;
 
-    $datas = (object)['task' => $task, 'id_user' => 1, 'date' => date("d F Y")];
+    var_dump("okkkka");
+    $datas = (object)['task' => $task, 'id_user' => 1, 'date' => $this->date];
     (new TaskModel())->addOne($datas);
 
     header('Location:add-again');
@@ -52,11 +56,15 @@ class HomeController extends Controller
 
   public function addAgain()
   {
-    $tasks = (new TaskModel(date("d F Y")))->getAll();
+    $tasks = (new TaskModel($this->date))->getAll();
 
     $this->content['title'] = 'The task has been add succesfully !';
     $this->content = array_merge($this->content, ['isopen' => true, 'tasks' => $tasks]);
 
     $this->render('task', $this->content);
+  }
+
+  public function deleteModal()
+  {
   }
 }

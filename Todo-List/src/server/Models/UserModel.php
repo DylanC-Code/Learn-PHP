@@ -10,7 +10,7 @@ class UserModel
   private $id;
   public function __construct(int $id = null)
   {
-    $this->db = new MyDB;
+    $this->db = new MyDB();
     $this->id = $id;
   }
 
@@ -30,10 +30,9 @@ class UserModel
 
   public function login($datas)
   {
-    $req = $this->db->prepare("SELECT * FROM users WHERE username=:pseudo");
-    $req->bindParam(':pseudo', $datas['pseudo']);
-    $datas = $req->execute();
+    $req = "SELECT * FROM users WHERE username='$datas[pseudo]'";
+    $req = $this->db->querySingle($req, true);
 
-    return $datas;
+    if ($datas['password'] == $req['password']) return $req['id'];
   }
 }
