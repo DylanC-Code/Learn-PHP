@@ -7,18 +7,22 @@ use App\Database\MyDB;
 class UserModel
 {
   private $db;
-  private $id;
-  public function __construct(int $id = null)
+  public function __construct()
   {
     $this->db = new MyDB();
-    $this->id = $id;
   }
 
-  public function register($datas)
+  /**
+   * Control if the user already exist in database, if isn't create it
+   *
+   * @param  array $datas
+   * @return bool
+   */
+  public function register(array $datas): bool
   {
     $user = $this->login($datas);
 
-    if ($user->fetchArray() !== false) return false;
+    if ($user) return false;
 
     $req = $this->db->prepare("INSERT INTO users (username,password) VALUES(:pseudo,:password)");
     $req->bindParam(':pseudo', $datas['pseudo']);
@@ -28,11 +32,18 @@ class UserModel
     return true;
   }
 
-  public function login($datas)
+  /**
+   * Play single request fot get user if exist
+   *
+   * @param  array $datas
+   * @return mixed
+   */
+  public function login(array $datas)
   {
     $req = "SELECT * FROM users WHERE username='$datas[pseudo]'";
     $req = $this->db->querySingle($req, true);
 
+    if (!$req) return false;
     if ($datas['password'] == $req['password']) return $req['id'];
   }
 }

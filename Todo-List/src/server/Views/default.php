@@ -16,7 +16,7 @@
         <img src="./src/client/assets/static/Burger.svg" alt="Burger">
       </figure>
       <ul class='invisible absolute w-[15vw] py-4 z-10 flex flex-col text-lg text-slate-50 bg-zinc-900'>
-        <a href=" " class="pb-1">Home</a>
+        <a href="/Todo-List" class="pb-1">Home</a>
         <a href=<?= $connect ? "logout" : "login" ?>><?= $connect ? "Disconnect" : "Login" ?></a>
         <a href="register">Register</a>
       </ul>

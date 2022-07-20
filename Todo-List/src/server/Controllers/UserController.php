@@ -19,6 +19,7 @@ class UserController extends Controller
     $this->render('user', $this->content);
   }
 
+
   public function login()
   {
     $inputs = $this->checkInput();
@@ -38,12 +39,11 @@ class UserController extends Controller
       $this->render('user', $this->content);
     endif;
 
-    // header("Location:/");
+    header("Location:/Todo-List");
   }
 
   public function registerForm()
   {
-
     $this->render('user', $this->content);
   }
 
